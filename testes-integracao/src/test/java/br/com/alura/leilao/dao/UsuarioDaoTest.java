@@ -1,5 +1,6 @@
 package br.com.alura.leilao.dao;
 
+import br.com.alura.leilao.builders.UsuarioBuilder;
 import br.com.alura.leilao.configuracao.JPAConfig;
 import br.com.alura.leilao.model.Usuario;
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +32,11 @@ public class UsuarioDaoTest {
     }
 
     private Usuario persistirUsuario() {
-        Usuario usuario = new Usuario("fulano", "fulano@gmail.com", "123456");
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("fulano")
+                .comEmail("fulano@gmail.com")
+                .comSenha("123456")
+                .criar();
         em.persist(usuario);
         return usuario;
     }
@@ -39,7 +44,6 @@ public class UsuarioDaoTest {
     @Test
     void testeDeveriaEncontrarUsuarioCadastroPeloUserName() {
         Usuario usuario = persistirUsuario();
-
         Usuario usuarioEncontrado = dao.buscarPorUsername("fulano");
 
         assertNotNull(usuarioEncontrado);

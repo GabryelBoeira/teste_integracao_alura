@@ -1,5 +1,7 @@
 package br.com.alura.leilao.dao;
 
+import br.com.alura.leilao.builders.LeilaoBuilder;
+import br.com.alura.leilao.builders.UsuarioBuilder;
 import br.com.alura.leilao.configuracao.JPAConfig;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.model.Usuario;
@@ -32,10 +34,20 @@ public class LeilaoDaoTest {
     }
 
     private Leilao persistirLeilao() {
-        Usuario usuario = new Usuario("fulano", "fulano@gmail.com", "123456");
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("fulano")
+                .comEmail("fulano@gmail.com")
+                .comSenha("123456")
+                .criar();
         em.persist(usuario);
 
-        Leilao leilao = new Leilao("Mochila", new BigDecimal("70"), LocalDate.now(), usuario);
+        Leilao leilao = new LeilaoBuilder()
+                .comNome("Mochila")
+                .comValorInicial(new BigDecimal("70"))
+                .comData(LocalDate.now())
+                .comUsuario(usuario)
+                .criar();
+
         leilao = dao.salvar(leilao);
         assertNotNull(leilao.getId(), "Nao retorno o id para o leilao salvo");
         return leilao;
