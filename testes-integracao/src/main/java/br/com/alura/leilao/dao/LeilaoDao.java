@@ -22,8 +22,8 @@ public class LeilaoDao {
 		this.em = em;
 	}
 
-	public void salvar(Leilao leilao) {
-		em.merge(leilao);
+	public Leilao salvar(Leilao leilao) {
+		return em.merge(leilao);
 	}
 
 	public Leilao buscarPorId(Long id) {
