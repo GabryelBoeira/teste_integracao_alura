@@ -53,4 +53,12 @@ public class UsuarioDaoTest {
         assertThrows(NoResultException.class, () -> dao.buscarPorUsername("beltrano"));
     }
 
+    @Test
+    void testeDeveriaRemoverUmUsuario() {
+        Usuario usuario = persistirUsuario();
+        dao.deletar(usuario);
+
+        assertThrows(NoResultException.class, () -> dao.buscarPorUsername("fulano"));
+    }
+
 }
