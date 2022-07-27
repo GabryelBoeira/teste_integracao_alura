@@ -2,12 +2,13 @@ package br.com.alura.leilao.dao;
 
 import br.com.alura.leilao.configuracao.JPAConfig;
 import br.com.alura.leilao.model.Usuario;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UsuarioDaoTest {
 
@@ -21,15 +22,25 @@ public class UsuarioDaoTest {
     }
 
     @Test
-    void testeBuscaDeUsuarioPeloUserName() {
+    void testeDeveriaEncontrarUsuarioCadastroPeloUserName() {
         Usuario usuarioTeste = new Usuario("fulano", "fulano@gmail.com", "123456");
-
         em.getTransaction().begin();
         em.persist(usuarioTeste);
         em.getTransaction().commit();
 
         Usuario usuarioEncontrado = dao.buscarPorUsername("fulano");
-        Assertions.assertNotNull(usuarioEncontrado);
+
+        assertNotNull(usuarioEncontrado);
+    }
+
+    @Test
+    void testeBuscaDeUsuarioPeloUserName() {
+        Usuario usuarioTeste = new Usuario("fulano", "fulano@gmail.com", "123456");
+        em.getTransaction().begin();
+        em.persist(usuarioTeste);
+        em.getTransaction().commit();
+
+        assertThrows(NoResultException.class, () -> dao.buscarPorUsername("beltrano"));
     }
 
 }
